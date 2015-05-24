@@ -1,23 +1,82 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<header class="hero-unit" id="banner">
+<!-- <header class="hero-unit" id="banner">
   <div class="container">
     <h1>'Angular Chat'</h1>
     <p class="lead">Kick-start your next web app with Angular Fullstack</p>
     <img src="assets/images/yeoman.png" alt="I'm Yeoman">
   </div>
 </header>
+-->
 
-<div class="container">
+<div ng-controller="ModalDemoCtrl" class="container">
   <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
-        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}</a></li>
-      </ul>
+    <div class="col-sm-3 chat-sidebar">
+      <h1 class="page-header">Chatrooms:</h1>
+      <button class="btn btn-info" ng-click="open()">New Room</button>
+      <div ng-include="'components/navbar/temporary-chatroom-list.html'"></div>
+    </div>
+
+    <div class="col-sm-9">
+      <h2 class="page-header">Main Chatroom</h2>
+        <!-- <ul>
+          <li ng-repeat="cust in customers">{{ cust.name }}</li>
+        </ul> -->
+
+        <form ng-submit="addMessage()">
+          <input ng-model="newMessageText" />
+          <button type="submit">Add Message</button>
+        </form>
+        <p>{{ newMessageText }}</p>
+
+        <div ng-include="'components/navbar/temporary-main-chatroom.html'"></div>
+        
+        <!-- Display chat array from Firebase-->
+
+
+        <ul class="show-chat-text">
+          <li ng-repeat="line in chat"> {{ line.content }} </li>
+        </ul>
+        <p> {{ chat[1].words }}</p>
+        <p> {{ customers[4].name }} </p>
+
+      <p>Enter chat:</p>
+      <form ng-submit="addChatText()">
+        <input type="text" class="form-control" placeholder="Chat text" ng-model="chatText" /></input>
+        <p> {{ chatText }} </p>
+        <button type="submit" class="btn btn-success">Send</button>
+      </form>
     </div>
   </div>
 </div>
+
+<!-- 
+<div ng-controller="ModalDemoCtrl">
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+        </div>
+        <div class="modal-body">
+            <ul>
+                <li ng-repeat="item in items">
+                    <a ng-click="selected.item = item">{{ item }}</a>
+                </li>
+            </ul>
+            Selected: <b>{{ selected.item }}</b>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+    <button class="btn btn-default" ng-click="open()">Open me!</button>
+    <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
+    <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
+    <button class="btn btn-default" ng-click="toggleAnimation()">Toggle Animation ({{ animationsEnabled }})</button>
+    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+</div>
+-->
 
 <footer class="footer">
   <div class="container">

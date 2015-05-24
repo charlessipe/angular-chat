@@ -1,6 +1,8 @@
 'use strict';
 
 angular.module('angularChatApp', [
+  'ui.bootstrap',
+  'firebase',
   'ngCookies',
   'ngResource',
   'ngSanitize',
