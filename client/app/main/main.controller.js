@@ -2,10 +2,10 @@
 
 angular.module('angularChatApp')
 
-  .factory('Room', ['$firebase', function($firebase) { // Create a room factory
+  .factory('Room', ["$firebaseObject", "$firebaseArray", function($firebaseObject, $firebaseArray) { // Create a room factory
 
   var firebaseRef = new Firebase('https://angular-chatroom.firebaseio.com/'); // ? add /rooms
-  var rooms = $firebase(firebaseRef.child('rooms')).$firebaseArray(); //.$asArray
+  var rooms = $firebaseObject(firebaseRef.child('rooms')).$firebaseArray(); //.$asArray
 
   return {
     all: rooms  // Room function returns object literal {all: rooms}
@@ -16,7 +16,7 @@ angular.module('angularChatApp')
   .factory('Message', ['$firebase', function($firebase) {
 
   var firebaseRef = new Firebase('https://angular-chatroom.firebaseio.com/');
-  var messages = $firebase(firebaseRef.child('messages')).$firebaseArray();;
+  var messages = $firebase(firebaseRef.child('messages')).$asArray();;
 
   return {
     send: function(newMessage) {
@@ -26,7 +26,7 @@ angular.module('angularChatApp')
   }])
 
 
-  .controller('MainCtrl', function ($scope, $http, $firebaseObject, $firebaseArray) {
+  .controller('MainCtrl', function ($scope, $http, $firebaseObject, $firebaseArray, Room) {
 
     var ref = new Firebase("https://angular-chatroom.firebaseio.com/"); // Instantiate the Firebase service with the new operator.
     
@@ -68,6 +68,7 @@ angular.module('angularChatApp')
     }
 
     
+
     /*$scope.addChatText = function() {  // Function to add a chat input to the Firebase chat array
       var newChatLine = {
         username: "Joe",
@@ -90,8 +91,17 @@ angular.module('angularChatApp')
     */
   })
 
+  .run(['$cookies', function($cookies) {
+
+    if (!$cookies.blocChatCurrentUser || $cookies.blocChatCurrentUser === '' ) {
+        // Do something to allow users to set their username
+    }
+
+    // open();  // open a modal to set a username
+
+  }])
   
-  
+
 
   // Don't know why I can't get rid of this controller
   .controller('ModalDemoCtrl', function ($scope, $modal, $log) { // Modal example
@@ -129,7 +139,7 @@ angular.module('angularChatApp')
 
   // Please note that $modalInstance represents a modal window (instance) dependency.
   // It is not the same as the $modal service used above.
-
+  
   .controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
 
   $scope.items = items;
