@@ -6,8 +6,7 @@ angular.module('angularChatApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ui.router',
-  'ui.bootstrap'
+  'ui.router'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider

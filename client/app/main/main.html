@@ -35,17 +35,17 @@
 
 
         <ul class="show-chat-text">
-          <li ng-repeat="line in chat"> {{ line.content }} </li>
+          <li ng-repeat="line in chat"> {{ line.name }}, {{ line.content }}, {{ line.sentAt }} </li>
         </ul>
-        <p> {{ chat[1].words }}</p>
-        <p> {{ customers[4].name }} </p>
 
-      <p>Enter chat:</p>
+      <!-- <p>Enter chat:</p>
       <form ng-submit="addChatText()">
         <input type="text" class="form-control" placeholder="Chat text" ng-model="chatText" /></input>
         <p> {{ chatText }} </p>
         <button type="submit" class="btn btn-success">Send</button>
       </form>
+      --> 
+
     </div>
   </div>
 </div>

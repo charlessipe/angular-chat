@@ -5,4 +5,10 @@
   <li>Front-End Web Development</li>
   <li>Science</li>
   <li>Sports</li>
+  <li>Create a controller and associate it with the home template in a $state and inject the Room service so that you can assign the array of objects retrieved by the all method to a $scope variable. Display the rooms in the template using ng-repeat.</li>
+</ul>
+
+<ul ng-repeat="roomname in roomlist"> 
+  <li> {{ roomname.all }} </li>
+  <li> Me </li>
 </ul>
