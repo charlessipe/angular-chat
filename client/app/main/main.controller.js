@@ -5,13 +5,19 @@ angular.module('angularChatApp')
   .factory('Room', ["$firebaseObject", "$firebaseArray", function($firebaseObject, $firebaseArray) { // Create a room factory
 
   var firebaseRef = new Firebase('https://angular-chatroom.firebaseio.com/'); // ? add /rooms
-  var rooms = $firebaseObject(firebaseRef.child('rooms')).$firebaseArray(); //.$asArray
+  var rooms = $firebaseArray(firebaseRef.child('rooms'));
+  //var rooms = $firebaseObject(firebaseRef.child('rooms')).$firebaseArray(); //.$asArray
+
+  // Add new array to Firebase
+  //var newArray = ref.child('newList'); // why doesn't this create a new array in firebase? (child of ref)
+  //var firebaseRef = new Firebase('https://angular-chatroom.firebaseio.com/rooms'); // why doesn't this create a new array in firebase?
 
   return {
     all: rooms  // Room function returns object literal {all: rooms}
   }
 
   }])
+
 
   .factory('Message', ['$firebase', function($firebase) {
 
@@ -29,11 +35,6 @@ angular.module('angularChatApp')
   .controller('MainCtrl', function ($scope, $http, $firebaseObject, $firebaseArray, Room) {
 
     var ref = new Firebase("https://angular-chatroom.firebaseio.com/"); // Instantiate the Firebase service with the new operator.
-    
-    var newArray = ref.child('newList'); // why doesn't this create a new array in firebase?
-
-    var firebaseRef = new Firebase('https://angular-chatroom.firebaseio.com/rooms'); // why doesn't this create a new array in firebase?
-
 
     // download the data into a local object
     $scope.data = $firebaseObject(ref);
@@ -44,13 +45,12 @@ angular.module('angularChatApp')
     // synchronize the object with a three-way data binding
     //syncObject.$bindTo($scope, "data");
 
-    //$scope.roomList = rooms.all; // assign the array of objects retrieved by the all method to a $scope variable
-    // not defined because Room not properly injected
+    $scope.roomList = Room.all; // assign the array of objects retrieved by the all method to a $scope variable
 
     $scope.addMessage = function() {
       $scope.chat.$add({
         name: 'Jeremy Sipe',
-        content: 'Hi, how are you doing?', 
+        content: 'Hello, how are you?', 
         sentAt: moment().format("MMM Do, hh:mmA"), 
         roomName: 'Cool Room'
         //content: $scope.newMessageText
@@ -61,13 +61,14 @@ angular.module('angularChatApp')
 
     $scope.addRoom = function() {  // Attempt to add room 
       $scope.roomList.$add({
-
-      });
-      $scope.chat.$save();
-      $scope.newMessageText = '';
+        name: $scope.newChatroomText,
+        age: 7
+      }); 
+      $scope.roomList.$save();
     }
 
-    
+    //addRoom();
+
 
     /*$scope.addChatText = function() {  // Function to add a chat input to the Firebase chat array
       var newChatLine = {
@@ -104,16 +105,23 @@ angular.module('angularChatApp')
 
 
   // Don't know why I can't get rid of this controller
-  .controller('ModalDemoCtrl', function ($scope, $modal, $log) { // Modal example
+  .controller('ModalDemoCtrl', function ($scope, $modal, $log, Room) { // Modal example
 
   $scope.items = ['item1', 'item2', 'item3'];
   $scope.animationsEnabled = true;
+
+    $scope.addRoom = function() {  // Attempt to add room 
+      Room.all.$add({
+        name: $scope.newChatroomText,
+      }); 
+      Room.all.$save();
+    }
 
   $scope.open = function (size) {
 
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
-      templateUrl: 'myModalContent.html',
+      templateUrl: 'components/mypartials/my-room-modal.html', // 'myModalContent.html'
       controller: 'ModalInstanceCtrl',
       size: size,
       resolve: {

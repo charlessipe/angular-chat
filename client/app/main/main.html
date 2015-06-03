@@ -13,8 +13,14 @@
   <div class="row">
     <div class="col-sm-3 chat-sidebar">
       <h1 class="page-header">Chatrooms:</h1>
-      <button class="btn btn-info" ng-click="open()">New Room</button>
-      <div ng-include="'components/navbar/temporary-chatroom-list.html'"></div>
+      <!-- <button class="btn btn-info" ng-click="open()">New Room</button><br><br>
+      <button class="btn btn-danger" ng-click="addRoom()">Add Default Room</button> -->
+      <form>
+        <input ng-model="newChatroomText" />
+          <button type="submit" data-ng-click="addRoom()">Add</button>
+      </form>
+      <p>{{ newChatroomText }}</p>
+      <div ng-include="'components/mypartials/my-chatroom-list.html'"></div> 
     </div>
 
     <div class="col-sm-9">
@@ -23,13 +29,18 @@
           <li ng-repeat="cust in customers">{{ cust.name }}</li>
         </ul> -->
 
-        <form ng-submit="addMessage()">
+        <!-- <form ng-submit="addMessage()">
           <input ng-model="newMessageText" />
           <button type="submit">Add Message</button>
+        </form> -->
+
+        <form>
+          <input ng-model="newMessageText" />
+          <button type="submit" data-ng-click="addMessage()">Add Message</button>
         </form>
         <p>{{ newMessageText }}</p>
 
-        <div ng-include="'components/navbar/temporary-main-chatroom.html'"></div>
+        <!-- <div ng-include="'components/navbar/temporary-main-chatroom.html'"></div> -->
         
         <!-- Display chat array from Firebase-->
 
