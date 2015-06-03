@@ -13,11 +13,9 @@
   <div class="row">
     <div class="col-sm-3 chat-sidebar">
       <h1 class="page-header">Chatrooms:</h1>
-      <!-- <button class="btn btn-info" ng-click="open()">New Room</button><br><br>
-      <button class="btn btn-danger" ng-click="addRoom()">Add Default Room</button> -->
       <form>
         <input ng-model="newChatroomText" />
-          <button type="submit" data-ng-click="addRoom()">Add</button>
+          <button type="submit" data-ng-click="addRoom()">Add Room</button>
       </form>
       <p>{{ newChatroomText }}</p>
       <div ng-include="'components/mypartials/my-chatroom-list.html'"></div> 
@@ -25,6 +23,7 @@
 
     <div class="col-sm-9">
       <h2 class="page-header">Main Chatroom</h2>
+        <h3> {{activeRoom}} </h3>
         <!-- <ul>
           <li ng-repeat="cust in customers">{{ cust.name }}</li>
         </ul> -->
@@ -46,7 +45,7 @@
 
 
         <ul class="show-chat-text">
-          <li ng-repeat="line in chat"> {{ line.name }}, {{ line.content }}, {{ line.sentAt }} </li>
+          <li ng-repeat="line in chat"> {{ line.name }}, {{ line.content }}, {{ line.roomId }}, {{ line.sentAt }} </li>
         </ul>
 
       <!-- <p>Enter chat:</p>

@@ -1,16 +1,15 @@
 'use strict';
 
+// The active room should be stored in a $scope object in the main controller, 
+// so that the title of the active room changes every time you visit a different room.
+
 angular.module('angularChatApp')
 
   .factory('Room', ["$firebaseObject", "$firebaseArray", function($firebaseObject, $firebaseArray) { // Create a room factory
 
-  var firebaseRef = new Firebase('https://angular-chatroom.firebaseio.com/'); // ? add /rooms
+  var firebaseRef = new Firebase('https://angular-chatroom.firebaseio.com/'); 
   var rooms = $firebaseArray(firebaseRef.child('rooms'));
   //var rooms = $firebaseObject(firebaseRef.child('rooms')).$firebaseArray(); //.$asArray
-
-  // Add new array to Firebase
-  //var newArray = ref.child('newList'); // why doesn't this create a new array in firebase? (child of ref)
-  //var firebaseRef = new Firebase('https://angular-chatroom.firebaseio.com/rooms'); // why doesn't this create a new array in firebase?
 
   return {
     all: rooms  // Room function returns object literal {all: rooms}
@@ -47,12 +46,14 @@ angular.module('angularChatApp')
 
     $scope.roomList = Room.all; // assign the array of objects retrieved by the all method to a $scope variable
 
+    $scope.activeRoom = "Main Room";
+
     $scope.addMessage = function() {
       $scope.chat.$add({
-        name: 'Jeremy Sipe',
+        name: 'Charles Xavier',
         content: 'Hello, how are you?', 
         sentAt: moment().format("MMM Do, hh:mmA"), 
-        roomName: 'Cool Room'
+        roomId: $scope.activeRoom
         //content: $scope.newMessageText
       });
       $scope.chat.$save();
@@ -67,7 +68,10 @@ angular.module('angularChatApp')
       $scope.roomList.$save();
     }
 
-    //addRoom();
+    $scope.changeRoom = function(start) {
+       $scope.activeRoom = $scope.roomList[start].name;    
+       console.log($scope.activeRoom); 
+    }
 
 
     /*$scope.addChatText = function() {  // Function to add a chat input to the Firebase chat array
