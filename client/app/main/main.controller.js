@@ -9,16 +9,23 @@ angular.module('angularChatApp')
 
   var firebaseRef = new Firebase('https://angular-chatroom.firebaseio.com/'); 
   var rooms = $firebaseArray(firebaseRef.child('rooms'));
+
   //var rooms = $firebaseObject(firebaseRef.child('rooms')).$firebaseArray(); //.$asArray
 
   return {
-    all: rooms  // Room function returns object literal {all: rooms}
+    all: rooms,  // Room function returns object literal {all: rooms}
+    messages: function(roomId) {
+      //firebaseRef.orderByChild('roomId') {
+        console.log('hi earth');
+      //}
+
+    }
   }
 
   }])
 
 
-  .factory('Message', ['$firebase', function($firebase) {
+  .factory('Message', ['$firebase', function($firebase) {  // this factory may not be necessary
 
   var firebaseRef = new Firebase('https://angular-chatroom.firebaseio.com/');
   var messages = $firebase(firebaseRef.child('messages')).$asArray();;
@@ -34,6 +41,10 @@ angular.module('angularChatApp')
   .controller('MainCtrl', function ($scope, $http, $firebaseObject, $firebaseArray, Room) {
 
     var ref = new Firebase("https://angular-chatroom.firebaseio.com/"); // Instantiate the Firebase service with the new operator.
+
+    //ref.orderByChild('roomId').equalTo('activeRoom').on('value', function() {
+    //  console.log(chat.val());
+    // });
 
     // download the data into a local object
     $scope.data = $firebaseObject(ref);
@@ -69,31 +80,23 @@ angular.module('angularChatApp')
     }
 
     $scope.changeRoom = function(start) {
-       $scope.activeRoom = $scope.roomList[start].name;    
-       console.log($scope.activeRoom); 
+      $scope.activeRoom = $scope.roomList[start].name;    
+      //console.log($scope.activeRoom); 
     }
 
+    ref.orderByChild("roomId").equalTo($scope.activeRoom).on("child_added", function(snapshot) {
+      console.log(snapshot.val());
+    });
 
-    /*$scope.addChatText = function() {  // Function to add a chat input to the Firebase chat array
-      var newChatLine = {
-        username: "Joe",
-        content: $scope.chatText,
-        sentAt: moment().format("MMM Do, hh:mmA")
-        //roomId: "<ROOM UID HERE>"
+    /*$scope.showMessages = function() { 
+      for(var i = 0; i < $scope.chat.length; i++) {
+        if ($scope.chat[i].roomId == $scope.activeRoom) {
+          console.log("This message is for current room"); // not showing anything in console.log
+        }
       }
-
-      $scope.chat.$add(newChatLine);  // Push input onto array
-      $scope.chat.$save();
-      $scope.chatText = '';  // Erases the input after submit
-    }*/
-    /*
-    $scope.customers = [
-      { name: 'Dave Jones', city: 'Phoenix' }, 
-      { name: 'Jamie Riley', city: 'Atlanta' }, 
-      { name: 'Heedy Wahlin', city: 'Chandler' },
-      { name: 'Thomas Winter', city: 'Seattle' } 
-    ];
+    }
     */
+
   })
 
   .run(['$cookies', function($cookies) {

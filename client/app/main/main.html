@@ -22,8 +22,7 @@
     </div>
 
     <div class="col-sm-9">
-      <h2 class="page-header">Main Chatroom</h2>
-        <h3> {{activeRoom}} </h3>
+      <h2 class="page-header">Current Chatroom: {{activeRoom}} </h2>
         <!-- <ul>
           <li ng-repeat="cust in customers">{{ cust.name }}</li>
         </ul> -->
@@ -45,7 +44,7 @@
 
 
         <ul class="show-chat-text">
-          <li ng-repeat="line in chat"> {{ line.name }}, {{ line.content }}, {{ line.roomId }}, {{ line.sentAt }} </li>
+          <li ng-repeat="line in chat"> <strong>Name:</strong> {{ line.name }} <strong>Message:</strong> {{ line.content }} <strong>Room:</strong> {{ line.roomId }} <strong>Time Sent:</strong> {{ line.sentAt }} </li>
         </ul>
 
       <!-- <p>Enter chat:</p>
