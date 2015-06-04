@@ -99,10 +99,15 @@ angular.module('angularChatApp')
 
   })
 
-  .run(['$cookies', function($cookies) {
+  .run(['$cookies', function($cookies, $modal, $scope) {
 
     if (!$cookies.blocChatCurrentUser || $cookies.blocChatCurrentUser === '' ) {
         // Do something to allow users to set their username
+        //$cookies.blocChatCurrentUser = $scope.userNameText;
+      //$modal.open({
+      // Modal configuration object properties
+    //})
+
     }
 
     // open();  // open a modal to set a username

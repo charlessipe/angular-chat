@@ -8,6 +8,34 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
  * App-wide Styles
  */
 
+body {
+  background-color: #fff;
+}
+
+.navbar-brand a {
+  color: blue;
+}
+
+.show-chat-text li:nth-child(odd) {
+  background-color: #efefef;
+}
+
+.show-room-names li {
+  font-size: 17px;
+}
+
+h3 {
+  margin-bottom: 0;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  padding-top: .5em;
+}
+
 .navbar-brand {
   font-size: 40px;
   padding-top: 35px;
