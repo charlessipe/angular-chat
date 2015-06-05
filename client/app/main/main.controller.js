@@ -59,18 +59,6 @@ angular.module('angularChatApp')
 
     $scope.activeRoom = "Main Room";
 
-    $scope.addMessage = function() {
-      $scope.chat.$add({
-        name: 'Charles Xavier',
-        content: 'Hello, how are you?', 
-        sentAt: moment().format("MMM Do, hh:mmA"), 
-        roomId: $scope.activeRoom
-        //content: $scope.newMessageText
-      });
-      $scope.chat.$save();
-      $scope.newMessageText = '';
-    }
-
     $scope.addRoom = function() {  // Attempt to add room 
       $scope.roomList.$add({
         name: $scope.newChatroomText,
@@ -79,11 +67,27 @@ angular.module('angularChatApp')
       $scope.roomList.$save();
     }
 
+    $scope.addMessage = function() {
+      var newContent = $scope.newContent;
+      var activeRoom = $scope.activeRoom;
+      var newMessage = {
+        name: 'Charles Xavier',
+        content: newContent, 
+        sentAt: moment().format("MMM Do, hh:mmA"), 
+        roomId: activeRoom
+      };
+
+      $scope.chat.$add(newMessage);
+      $scope.chat.$save(newMessage);
+      $scope.newContent = '';
+    }
+
     $scope.changeRoom = function(start) {
       $scope.activeRoom = $scope.roomList[start].name;    
       //console.log($scope.activeRoom); 
     }
 
+    // Query messages from activeRoom
     ref.orderByChild("roomId").equalTo($scope.activeRoom).on("child_added", function(snapshot) {
       console.log(snapshot.val());
     });

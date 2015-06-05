@@ -9,7 +9,7 @@
 </header>
 -->
 
-<div ng-controller="ModalDemoCtrl" class="container">
+<div class="container">
   <div class="row">
     <div class="col-sm-3 chat-sidebar">
       <h1 class="page-header">Chatrooms:</h1>
@@ -32,11 +32,11 @@
           <button type="submit">Add Message</button>
         </form> -->
 
-        <form>
-          <input ng-model="newMessageText" />
+        <div>
+          <input type="text" ng-model="newContent" /></input>
           <button type="submit" data-ng-click="addMessage()">Add Message</button>
-        </form>
-        <p>{{ newMessageText }}</p>
+        </div>
+        <p>{{ newContent }}</p>
 
         <!-- <div ng-include="'components/navbar/temporary-main-chatroom.html'"></div> -->
         
