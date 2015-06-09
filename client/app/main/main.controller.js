@@ -10,20 +10,84 @@ angular.module('angularChatApp')
   var firebaseRef = new Firebase('https://angular-chatroom.firebaseio.com/'); 
   var rooms = $firebaseArray(firebaseRef.child('rooms'));
 
+  var thirdRef = new Firebase('https://angular-chatroom.firebaseio.com/');
+  var messages = $firebaseArray(thirdRef.child('messages'));
+
   //var rooms = $firebaseObject(firebaseRef.child('rooms')).$firebaseArray(); //.$asArray
 
   return {
     all: rooms,  // Room function returns object literal {all: rooms}
-    messages: function(roomId) {
+    message: messages
       //firebaseRef.orderByChild('roomId') {
-        console.log('hi earth');
       //}
-
-    }
   }
 
   }])
+  
+  .filter("relevantMessages", function() {  // filter to show only messages matching current room ($scope.activeRoom)
+    return function(arrayOfMessages, currentRoom) {
+      var out = [];
+      for(var x=0; x<arrayOfMessages.length; x++){
+        if(arrayOfMessages[x].roomId == currentRoom) {
+          out.push(arrayOfMessages[x]);
+        }
+        return out;
+      }
+    }  
 
+  })
+
+  .filter('ordinal', function(){  // converts numbers in text input to ordinal
+  return function(number){
+    if(isNaN(number) || number < 1){
+      return number;
+    } else {
+      var lastDigit = number % 10;
+      if(lastDigit === 1){
+        return number + 'st'
+      } else if(lastDigit === 2){
+        return number + 'nd'
+      } else if (lastDigit === 3){
+        return number + 'rd'
+      } else if (lastDigit > 3){
+        return number + 'th'
+      }
+    }
+  }
+  })
+
+  .filter('filterRoom', function(){   // attempt not working
+  return function(messagesList){
+    for(i=0; i < messagesList.length; i++){
+      if(messagesList[i].roomId == activeRoom){
+      return messagesList[i];
+      } 
+    }
+  }
+  })
+
+  .filter('staticLanguage', function() {
+
+  // Create the return function and set the required parameter name to **input**
+  return function(input) {
+
+    var out = [];
+
+    // Using the angular.forEach method, go through the array of data and perform the operation of figuring out if the language is statically or dynamically typed.
+    angular.forEach(input, function(language) {
+
+      if (language.roomId === $scope.activeRoom) {
+        out.push(language)
+      }
+      
+    })
+
+    return out;
+    }
+
+  })
+
+  
 
   .factory('Message', ['$firebase', function($firebase) {  // this factory may not be necessary
 
@@ -56,8 +120,17 @@ angular.module('angularChatApp')
     //syncObject.$bindTo($scope, "data");
 
     $scope.roomList = Room.all; // assign the array of objects retrieved by the all method to a $scope variable
+    $scope.messagesList = Room.message; // assign the array of objects retrieved by the all method to a $scope variable
 
     $scope.activeRoom = "Main Room";
+
+    $scope.containsComparator = function(expected, actual){ // custom comparator
+      return actual.indexOf(expected) >-1;
+    }
+
+    $scope.filterByRoom = function(line){  // Unsucessful filter function
+      return ($scope.activeRoom.indexOf(messagesList.roomId) !== -1);
+    }
 
     $scope.addRoom = function() {  // Attempt to add room 
       $scope.roomList.$add({
@@ -77,8 +150,8 @@ angular.module('angularChatApp')
         roomId: activeRoom
       };
 
-      $scope.chat.$add(newMessage);
-      $scope.chat.$save(newMessage);
+      $scope.messagesList.$add(newMessage);
+      $scope.messagesList.$save(newMessage);
       $scope.newContent = '';
     }
 

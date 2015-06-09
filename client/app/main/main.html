@@ -32,19 +32,18 @@
           <button type="submit">Add Message</button>
         </form> -->
 
-        <div>
+        <form>
           <input type="text" ng-model="newContent" /></input>
           <button type="submit" data-ng-click="addMessage()">Add Message</button>
-        </div>
-        <p>{{ newContent }}</p>
+        </form>
+        <p>{{ newContent | ordinal}}</p>
 
         <!-- <div ng-include="'components/navbar/temporary-main-chatroom.html'"></div> -->
         
-        <!-- Display chat array from Firebase-->
+        <!-- Display messagesList array from Firebase-->
 
-
-        <ul class="show-chat-text">
-          <li ng-repeat="line in chat"> <strong>Name:</strong> {{ line.name }} <strong>Message:</strong> {{ line.content }} <strong>Room:</strong> {{ line.roomId }} <strong>Time Sent:</strong> {{ line.sentAt }} </li>
+        <ul class="show-chat-text"> 
+          <li ng-repeat="line in messagesList | filter:{roomId:activeRoom}:containsComparator"> <strong>Name:</strong> {{ line.name }} <strong>Message:</strong> {{ line.content }} <strong>Room:</strong> {{ line.roomId }} <strong>Time Sent:</strong> {{ line.sentAt }} </li>
         </ul>
 
       <!-- <p>Enter chat:</p>

@@ -12,6 +12,10 @@ body {
   background-color: #fff;
 }
 
+a:active { 
+    background-color: yellow;
+}
+
 .navbar-brand a {
   color: blue;
 }
