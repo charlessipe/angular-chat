@@ -14,11 +14,23 @@
     <div class="col-sm-3 chat-sidebar">
       <h1 class="page-header">Chatrooms:</h1>
       <form>
-        <input ng-model="newChatroomText" />
+        <input ng-model="newChatroomText" /></input>
           <button type="submit" data-ng-click="addRoom()">Add Room</button>
       </form>
       <p>{{ newChatroomText }}</p>
-      <div ng-include="'components/mypartials/my-chatroom-list.html'"></div> 
+
+      <form>
+        <input ng-model="newUserName" /></input>
+          <button type="submit" data-ng-click="changeUserName()">User Name</button>
+      </form>
+      <p>{{ newUserName }}</p>
+      
+      <div ng-controller="ModalDemoCtrl">
+      <button class="btn btn-info" ng-click="open()">New Room</button><br><br>
+      
+  
+      <div ng-include="'components/mypartials/my-chatroom-list.html'"></div>
+      </div>
     </div>
 
     <div class="col-sm-9">
@@ -33,7 +45,7 @@
         </form> -->
 
         <form>
-          <input type="text" ng-model="newContent" /></input>
+          <span>User Name: {{ currentUser }} </span><input type="text" ng-model="newContent" /></input>
           <button type="submit" data-ng-click="addMessage()">Add Message</button>
         </form>
         <p>{{ newContent | ordinal}}</p>

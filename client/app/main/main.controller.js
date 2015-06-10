@@ -56,7 +56,7 @@ angular.module('angularChatApp')
   }
   })
 
-  .filter('filterRoom', function(){   // attempt not working
+  .filter('filterRoom', function(){   // filter not working
   return function(messagesList){
     for(i=0; i < messagesList.length; i++){
       if(messagesList[i].roomId == activeRoom){
@@ -66,7 +66,7 @@ angular.module('angularChatApp')
   }
   })
 
-  .filter('staticLanguage', function() {
+  .filter('staticLanguage', function() {  // filter not working
 
   // Create the return function and set the required parameter name to **input**
   return function(input) {
@@ -123,6 +123,7 @@ angular.module('angularChatApp')
     $scope.messagesList = Room.message; // assign the array of objects retrieved by the all method to a $scope variable
 
     $scope.activeRoom = "Main Room";
+    $scope.currentUser = "Logan Howlett";
 
     $scope.containsComparator = function(expected, actual){ // custom comparator
       return actual.indexOf(expected) >-1;
@@ -132,10 +133,9 @@ angular.module('angularChatApp')
       return ($scope.activeRoom.indexOf(messagesList.roomId) !== -1);
     }
 
-    $scope.addRoom = function() {  // Attempt to add room 
+    $scope.addRoom = function() {   
       $scope.roomList.$add({
-        name: $scope.newChatroomText,
-        age: 7
+        name: $scope.newChatroomText
       }); 
       $scope.roomList.$save();
     }
@@ -143,8 +143,9 @@ angular.module('angularChatApp')
     $scope.addMessage = function() {
       var newContent = $scope.newContent;
       var activeRoom = $scope.activeRoom;
+      var currentUser = $scope.currentUser;
       var newMessage = {
-        name: 'Charles Xavier',
+        name: currentUser,
         content: newContent, 
         sentAt: moment().format("MMM Do, hh:mmA"), 
         roomId: activeRoom
@@ -160,10 +161,16 @@ angular.module('angularChatApp')
       //console.log($scope.activeRoom); 
     }
 
-    // Query messages from activeRoom
+    $scope.changeUserName = function() {
+      $scope.currentUser = $scope.newUserName;
+      console.log($scope.currentUser);
+    }
+
+    /*// Query messages from activeRoom
     ref.orderByChild("roomId").equalTo($scope.activeRoom).on("child_added", function(snapshot) {
       console.log(snapshot.val());
     });
+    */
 
     /*$scope.showMessages = function() { 
       for(var i = 0; i < $scope.chat.length; i++) {
@@ -187,10 +194,11 @@ angular.module('angularChatApp')
 
     }
 
-    // open();  // open a modal to set a username
+   // open();  // open a modal to set a username
 
   }])
-  
+
+
 
 
   // Don't know why I can't get rid of this controller
@@ -199,11 +207,11 @@ angular.module('angularChatApp')
   $scope.items = ['item1', 'item2', 'item3'];
   $scope.animationsEnabled = true;
 
-    $scope.addRoom = function() {  // Attempt to add room 
-      Room.all.$add({
-        name: $scope.newChatroomText,
+    $scope.addRoom = function() {   
+      $scope.roomList.$add({
+        name: $scope.newChatroomText
       }); 
-      Room.all.$save();
+      $scope.roomList.$save();
     }
 
   $scope.open = function (size) {
