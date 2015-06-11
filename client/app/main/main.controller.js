@@ -138,6 +138,7 @@ angular.module('angularChatApp')
         name: $scope.newChatroomText
       }); 
       $scope.roomList.$save();
+      $scope.newChatroomText = '';
     }
 
     $scope.addMessage = function() {
@@ -164,6 +165,7 @@ angular.module('angularChatApp')
     $scope.changeUserName = function() {
       $scope.currentUser = $scope.newUserName;
       console.log($scope.currentUser);
+      $scope.newUserName = '';
     }
 
     /*// Query messages from activeRoom
@@ -185,15 +187,15 @@ angular.module('angularChatApp')
 
   .run(['$cookies', function($cookies, $modal, $scope) {
 
-    if (!$cookies.blocChatCurrentUser || $cookies.blocChatCurrentUser === '' ) {
+    if (!$cookies.currentUser || $cookies.currentUser === 'Logan Howlett' ) {
         // Do something to allow users to set their username
         //$cookies.blocChatCurrentUser = $scope.userNameText;
       //$modal.open({
       // Modal configuration object properties
     //})
-
+      open();
     }
-
+     
    // open();  // open a modal to set a username
 
   }])
