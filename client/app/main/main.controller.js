@@ -1,8 +1,5 @@
 'use strict';
 
-// The active room should be stored in a $scope object in the main controller, 
-// so that the title of the active room changes every time you visit a different room.
-
 angular.module('angularChatApp')
 
   .factory('Room', ["$firebaseObject", "$firebaseArray", function($firebaseObject, $firebaseArray) { // Create a room factory
@@ -12,8 +9,6 @@ angular.module('angularChatApp')
 
   var thirdRef = new Firebase('https://angular-chatroom.firebaseio.com/');
   var messages = $firebaseArray(thirdRef.child('messages'));
-
-  //var rooms = $firebaseObject(firebaseRef.child('rooms')).$firebaseArray(); //.$asArray
 
   return {
     all: rooms,  // Room function returns object literal {all: rooms}
@@ -56,59 +51,9 @@ angular.module('angularChatApp')
   }
   })
 
-  .filter('filterRoom', function(){   // filter not working
-  return function(messagesList){
-    for(i=0; i < messagesList.length; i++){
-      if(messagesList[i].roomId == activeRoom){
-      return messagesList[i];
-      } 
-    }
-  }
-  })
-
-  .filter('staticLanguage', function() {  // filter not working
-
-  // Create the return function and set the required parameter name to **input**
-  return function(input) {
-
-    var out = [];
-
-    // Using the angular.forEach method, go through the array of data and perform the operation of figuring out if the language is statically or dynamically typed.
-    angular.forEach(input, function(language) {
-
-      if (language.roomId === $scope.activeRoom) {
-        out.push(language)
-      }
-      
-    })
-
-    return out;
-    }
-
-  })
-
-  
-
-  .factory('Message', ['$firebase', function($firebase) {  // this factory may not be necessary
-
-  var firebaseRef = new Firebase('https://angular-chatroom.firebaseio.com/');
-  var messages = $firebase(firebaseRef.child('messages')).$asArray();;
-
-  return {
-    send: function(newMessage) {
-      // Send method logic
-    }
-  }
-  }])
-
-
   .controller('MainCtrl', function ($scope, $http, $firebaseObject, $firebaseArray, Room) {
 
     var ref = new Firebase("https://angular-chatroom.firebaseio.com/"); // Instantiate the Firebase service with the new operator.
-
-    //ref.orderByChild('roomId').equalTo('activeRoom').on('value', function() {
-    //  console.log(chat.val());
-    // });
 
     // download the data into a local object
     $scope.data = $firebaseObject(ref);
@@ -120,10 +65,11 @@ angular.module('angularChatApp')
     //syncObject.$bindTo($scope, "data");
 
     $scope.roomList = Room.all; // assign the array of objects retrieved by the all method to a $scope variable
+  
     $scope.messagesList = Room.message; // assign the array of objects retrieved by the all method to a $scope variable
 
     $scope.activeRoom = "Main Room";
-    $scope.currentUser = "Logan Howlett";
+    $scope.currentUser = "Anonymous User";
 
     $scope.containsComparator = function(expected, actual){ // custom comparator
       return actual.indexOf(expected) >-1;
@@ -168,21 +114,6 @@ angular.module('angularChatApp')
       $scope.newUserName = '';
     }
 
-    /*// Query messages from activeRoom
-    ref.orderByChild("roomId").equalTo($scope.activeRoom).on("child_added", function(snapshot) {
-      console.log(snapshot.val());
-    });
-    */
-
-    /*$scope.showMessages = function() { 
-      for(var i = 0; i < $scope.chat.length; i++) {
-        if ($scope.chat[i].roomId == $scope.activeRoom) {
-          console.log("This message is for current room"); // not showing anything in console.log
-        }
-      }
-    }
-    */
-
   })
 
   .run(['$cookies', function($cookies, $modal, $scope) {
@@ -193,34 +124,30 @@ angular.module('angularChatApp')
       //$modal.open({
       // Modal configuration object properties
     //})
-      open();
+      console.log("Cookies are delicious");
     }
      
    // open();  // open a modal to set a username
 
   }])
 
-
-
-
-  // Don't know why I can't get rid of this controller
   .controller('ModalDemoCtrl', function ($scope, $modal, $log, Room) { // Modal example
 
   $scope.items = ['item1', 'item2', 'item3'];
   $scope.animationsEnabled = true;
-
+  /*
     $scope.addRoom = function() {   
       $scope.roomList.$add({
         name: $scope.newChatroomText
       }); 
       $scope.roomList.$save();
     }
-
+  */
   $scope.open = function (size) {
 
     var modalInstance = $modal.open({
       animation: $scope.animationsEnabled,
-      templateUrl: 'components/mypartials/my-room-modal.html', // 'myModalContent.html'
+      templateUrl: 'app/partials/modal-roomname.html', // 'myModalContent.html' 'app/partials/my-room-modal.html'
       controller: 'ModalInstanceCtrl',
       size: size,
       resolve: {
@@ -230,8 +157,8 @@ angular.module('angularChatApp')
       }
     });
 
-    modalInstance.result.then(function (selectedItem) {
-      $scope.selected = selectedItem;
+    modalInstance.result.then(function (room) {
+      console.log(room);
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });
@@ -261,7 +188,8 @@ angular.module('angularChatApp')
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
-
-  });
+  
+  
+});
 
 

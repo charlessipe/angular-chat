@@ -1,48 +1,26 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<!-- <header class="hero-unit" id="banner">
-  <div class="container">
-    <h1>'Angular Chat'</h1>
-    <p class="lead">Kick-start your next web app with Angular Fullstack</p>
-    <img src="assets/images/yeoman.png" alt="I'm Yeoman">
-  </div>
-</header>
--->
-
 <div class="container">
   <div class="row">
     <div class="col-sm-3 chat-sidebar">
       <h1 class="page-header">Chatrooms:</h1>
+      <p>Add a new room:</p>
       <form>
         <input ng-model="newChatroomText" /></input>
           <button type="submit" data-ng-click="addRoom()">Add Room</button>
       </form>
-      <p>{{ newChatroomText }}</p>
-
+      <p>Enter your user name:</p>
       <form>
         <input ng-model="newUserName" /></input>
           <button type="submit" data-ng-click="changeUserName()">User Name</button>
       </form>
-      <p>{{ newUserName }}</p>
+        
+      <div ng-include="'app/partials/my-chatroom-list.html'"></div>
       
-      <div ng-controller="ModalDemoCtrl">
-      <button class="btn btn-info" ng-click="open()">New Room</button><br><br>
-      
-  
-      <div ng-include="'components/mypartials/my-chatroom-list.html'"></div>
-      </div>
     </div>
 
     <div class="col-sm-9">
       <h2 class="page-header">Current Chatroom: {{activeRoom}} </h2>
-        <!-- <ul>
-          <li ng-repeat="cust in customers">{{ cust.name }}</li>
-        </ul> -->
-
-        <!-- <form ng-submit="addMessage()">
-          <input ng-model="newMessageText" />
-          <button type="submit">Add Message</button>
-        </form> -->
 
         <form>
           <span>User Name: {{ currentUser }} </span><input type="text" ng-model="newContent" /></input>
@@ -50,53 +28,13 @@
         </form>
         <p>{{ newContent | ordinal}}</p>
 
-        <!-- <div ng-include="'components/navbar/temporary-main-chatroom.html'"></div> -->
-        
-        <!-- Display messagesList array from Firebase-->
-
         <ul class="show-chat-text"> 
-          <li ng-repeat="line in messagesList | filter:{roomId:activeRoom}:containsComparator"> <strong>Name:</strong> {{ line.name }} <strong>Message:</strong> {{ line.content }} <strong>Room:</strong> {{ line.roomId }} <strong>Time Sent:</strong> {{ line.sentAt }} </li>
+          <li ng-repeat="line in messagesList | filter:{roomId:activeRoom}:containsComparator "> <strong>Name:</strong> {{ line.name }} <strong>Message:</strong> {{ line.content }} <strong>Room:</strong> {{ line.roomId }} <strong>Time Sent:</strong> {{ line.sentAt }} </li>
         </ul>
-
-      <!-- <p>Enter chat:</p>
-      <form ng-submit="addChatText()">
-        <input type="text" class="form-control" placeholder="Chat text" ng-model="chatText" /></input>
-        <p> {{ chatText }} </p>
-        <button type="submit" class="btn btn-success">Send</button>
-      </form>
-      --> 
 
     </div>
   </div>
 </div>
-
-<!-- 
-<div ng-controller="ModalDemoCtrl">
-    <script type="text/ng-template" id="myModalContent.html">
-        <div class="modal-header">
-            <h3 class="modal-title">I'm a modal!</h3>
-        </div>
-        <div class="modal-body">
-            <ul>
-                <li ng-repeat="item in items">
-                    <a ng-click="selected.item = item">{{ item }}</a>
-                </li>
-            </ul>
-            Selected: <b>{{ selected.item }}</b>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
-    </script>
-
-    <button class="btn btn-default" ng-click="open()">Open me!</button>
-    <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
-    <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
-    <button class="btn btn-default" ng-click="toggleAnimation()">Toggle Animation ({{ animationsEnabled }})</button>
-    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
-</div>
--->
 
 <footer class="footer">
   <div class="container">
